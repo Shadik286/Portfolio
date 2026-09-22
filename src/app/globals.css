@@ -1,26 +1,247 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ==========================================================================
+   Design tokens — Cobalt + Amber
+   One cool primary carries everything interactive. Amber is reserved
+   exclusively for achievement semantics (ratings, ranks, contest results),
+   so colour always means something.
+   ========================================================================== */
+@theme {
+  /* neutral ramp (cool-tinted, not pure grey) */
+  --color-ink: #0b0d12;
+  --color-ink-raised: #10131b;
+  --color-surface: #141821;
+  --color-surface-hi: #1b2130;
+  --color-line: #232a38;
+  --color-line-hi: #333d52;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* type */
+  --color-fg: #e8ebf2;
+  --color-fg-muted: #96a0b5;
+  --color-fg-dim: #67718a;
+
+  /* primary — links, focus, CTAs, active state */
+  --color-primary: #4c7dff;
+  --color-primary-soft: #7c9aff;
+  --color-primary-deep: #2b5bd7;
+
+  /* amber — achievements only */
+  --color-amber: #ffb454;
+  --color-amber-deep: #c8801f;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back: cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  color-scheme: dark;
+  --background: var(--color-ink);
+  --foreground: var(--color-fg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 99px;
+  border: 2px solid var(--color-ink);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-line-hi);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   Card system
+   A card is a quiet surface at rest and a lit one on hover. The lighting is
+   three layers: a hairline that warms to primary, a soft outer glow, and a
+   pointer-tracked spotlight fed by --mx/--my from the Card component.
+   ========================================================================== */
+.card {
+  position: relative;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 40%),
+    var(--color-surface);
+  border: 1px solid var(--color-line);
+  transition:
+    border-color 0.4s var(--ease-out-soft),
+    background-color 0.4s var(--ease-out-soft),
+    box-shadow 0.4s var(--ease-out-soft),
+    transform 0.4s var(--ease-out-soft);
+  transform-style: preserve-3d;
+}
+
+/* top-edge specular highlight — what makes the surface read as lit */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.14) 30%,
+    rgba(255, 255, 255, 0.14) 70%,
+    transparent
+  );
+  opacity: 0.7;
+  transition: opacity 0.4s var(--ease-out-soft);
+  pointer-events: none;
+}
+
+/* pointer spotlight */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    360px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in oklab, var(--color-primary) 16%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-out-soft);
+  pointer-events: none;
+}
+
+.card:hover,
+.card:focus-within {
+  border-color: color-mix(in oklab, var(--color-primary) 45%, var(--color-line));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 40%),
+    var(--color-surface-hi);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 24px 60px -28px color-mix(in oklab, var(--color-primary) 60%, transparent);
+}
+
+.card:hover::before,
+.card:focus-within::before {
+  opacity: 1;
+}
+
+.card:hover::after,
+.card:focus-within::after {
+  opacity: 1;
+}
+
+/* amber variant — achievement cards only */
+.card-amber:hover,
+.card-amber:focus-within {
+  border-color: color-mix(in oklab, var(--color-amber) 45%, var(--color-line));
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 24px 60px -28px color-mix(in oklab, var(--color-amber) 55%, transparent);
+}
+.card-amber::after {
+  background: radial-gradient(
+    360px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in oklab, var(--color-amber) 14%, transparent),
+    transparent 60%
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Fly-into-place
+   Children sit a few px off their final position at rest, then snap home and
+   lift toward the viewer when the card is hovered or focused. Offsets come
+   from --fx/--fy/--fr, the lift from --fz, the stagger from --fd.
+   -------------------------------------------------------------------------- */
+[data-fly] {
+  transform: translate3d(var(--fx, 0px), var(--fy, 10px), 0) rotate(var(--fr, 0deg));
+  opacity: 0.86;
+  transition:
+    transform 0.55s var(--ease-back) var(--fd, 0s),
+    opacity 0.4s var(--ease-out-soft) var(--fd, 0s);
+  will-change: transform;
+}
+
+.card:hover [data-fly],
+.card:focus-within [data-fly] {
+  transform: translate3d(0, 0, var(--fz, 26px));
+  opacity: 1;
+}
+
+/* grid that gives its cards a shared vanishing point */
+.card-stage {
+  perspective: 1200px;
+}
+
+/* --------------------------------------------------------------------------
+   Utilities
+   -------------------------------------------------------------------------- */
+.text-gradient {
+  background: linear-gradient(120deg, var(--color-fg) 20%, var(--color-primary-soft));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hairline {
+  border-top: 1px solid var(--color-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-fly] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* typing caret for the source card */
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: caret-blink 1.05s steps(1, end) infinite;
 }
