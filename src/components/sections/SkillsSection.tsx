@@ -79,42 +79,36 @@ const logos: Record<string, IconType> = {
 const groups: {
   id: string;
   title: string;
-  note: string;
   Icon: IconType;
   skills: string[];
 }[] = [
   {
     id: "languages",
     title: "Languages",
-    note: "C++ is home — four years of contests in it",
     Icon: Terminal,
     skills: ["C++", "C", "Java", "Python", "TypeScript", "JavaScript", "Dart"],
   },
   {
     id: "frontend",
     title: "Frontend & Mobile",
-    note: "13-screen Flutter app, React and Next.js SPAs",
     Icon: Layers,
     skills: ["React", "Next.js", "Flutter", "Tailwind CSS", "HTML5", "CSS3"],
   },
   {
     id: "backend",
     title: "Backend",
-    note: "42 REST endpoints in production on Renten",
     Icon: Server,
     skills: ["Node.js", "FastAPI", "Prisma", "REST API", "JWT", "OAuth 2.0"],
   },
   {
     id: "databases",
     title: "Databases",
-    note: "23-table schema design, vector search",
     Icon: Database,
     skills: ["PostgreSQL", "MySQL", "pgvector", "ChromaDB"],
   },
   {
     id: "ai",
     title: "AI & Machine Learning",
-    note: "RAG pipelines and a multimodal thesis in PyTorch",
     Icon: Brain,
     skills: [
       "PyTorch",
@@ -130,14 +124,12 @@ const groups: {
   {
     id: "tools",
     title: "Tools & Platforms",
-    note: "Shipped on Vercel, cPanel and FastAPI Cloud",
     Icon: Wrench,
     skills: ["Git", "GitHub", "Supabase", "Vercel", "cPanel", "Cloudinary"],
   },
   {
     id: "core",
     title: "Core CS",
-    note: "The part contests actually taught me",
     Icon: Binary,
     skills: ["Data Structures & Algorithms", "OOP", "DBMS"],
   },
@@ -148,7 +140,7 @@ function SkillChip({ name, index }: { name: string; index: number }) {
   return (
     <motion.li
       variants={staggerChild}
-      className="group/chip flex items-center gap-2 rounded-lg border border-line bg-ink-raised/60 px-3 py-2 transition-colors duration-300 hover:border-primary/40 hover:bg-primary/[0.07]"
+      className="group/chip flex items-center gap-2 rounded-md bg-ink-raised/70 px-2.5 py-1.5 transition-colors duration-300 hover:bg-primary/[0.09]"
       {...fly({
         x: 0,
         y: 8,
@@ -164,7 +156,7 @@ function SkillChip({ name, index }: { name: string; index: number }) {
           {name.charAt(0)}
         </span>
       )}
-      <span className="whitespace-nowrap text-[13px] text-fg-muted transition-colors duration-300 group-hover/chip:text-fg">
+      <span className="whitespace-nowrap text-[12.5px] text-fg-muted transition-colors duration-300 group-hover/chip:text-fg">
         {name}
       </span>
     </motion.li>
@@ -182,7 +174,6 @@ export function SkillsSection() {
           index="02"
           kicker="Toolkit"
           title="What I build with."
-          lead="Grouped by where it sits in a product rather than by how well I know it — each card notes where I have actually used the group in anger."
         />
 
         {/* A 12-column bed so the seven cards land in exactly two rows:
@@ -196,29 +187,17 @@ export function SkillsSection() {
             >
               <Card tilt className="h-full p-6">
                 <div
-                  className="mb-1 flex items-center gap-3"
+                  className="mb-4 flex items-center gap-2.5"
                   {...fly({ x: -8, y: 7, z: 38 })}
                 >
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-primary/25 bg-primary/10 text-primary">
-                    <group.Icon className="h-[18px] w-[18px]" />
-                  </span>
+                  <group.Icon className="h-4 w-4 shrink-0 text-primary" />
                   <h3 className="text-[15px] font-semibold tracking-tight text-fg">
                     {group.title}
                   </h3>
-                  <span className="ml-auto font-mono text-[11px] text-fg-dim">
-                    {String(group.skills.length).padStart(2, "0")}
-                  </span>
                 </div>
 
-                <p
-                  className="mb-5 pl-12 text-[12.5px] leading-snug text-fg-dim"
-                  {...fly({ x: 6, y: 6, z: 24, d: 0.04 })}
-                >
-                  {group.note}
-                </p>
-
                 <motion.ul
-                  className="flex flex-wrap gap-2"
+                  className="flex flex-wrap gap-1.5"
                   variants={staggerParent}
                   initial="hidden"
                   whileInView="shown"

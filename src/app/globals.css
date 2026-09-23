@@ -245,3 +245,428 @@ html {
 .caret {
   animation: caret-blink 1.05s steps(1, end) infinite;
 }
+
+/* ==========================================================================
+   Experience timeline
+   Rows collapsed to one line, opened by pointing at them. The rail runs
+   behind the nodes; the open row lights its node, warms its date pill and
+   staggers its achievements in from below.
+   ========================================================================== */
+.xp-list {
+  position: relative;
+  margin-top: 0.25rem;
+}
+
+.xp-list::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 34px;
+  bottom: 10px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    var(--color-line),
+    color-mix(in oklab, var(--color-line) 35%, transparent)
+  );
+  pointer-events: none;
+}
+
+.xp-item {
+  position: relative;
+}
+
+.xp-item + .xp-item {
+  border-top: 1px solid color-mix(in oklab, var(--color-line) 70%, transparent);
+}
+
+/* the lit surface behind an open row */
+.xp-item::before {
+  content: "";
+  position: absolute;
+  inset: 0 -1.25rem;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--color-primary) 9%, transparent),
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-out-soft);
+  pointer-events: none;
+}
+
+.xp-item[data-open]::before {
+  opacity: 1;
+}
+
+.xp-head {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 22px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.xp-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: none;
+  margin-top: 3px;
+  height: 22px;
+  width: 22px;
+  border-radius: 999px;
+  border: 1px solid var(--color-line-hi);
+  background: var(--color-ink);
+  transition:
+    border-color 0.45s var(--ease-out-soft),
+    box-shadow 0.45s var(--ease-out-soft);
+}
+
+.xp-node::after {
+  content: "";
+  height: 6px;
+  width: 6px;
+  border-radius: 999px;
+  background: var(--color-fg-dim);
+  transition:
+    background-color 0.45s var(--ease-out-soft),
+    box-shadow 0.45s var(--ease-out-soft);
+}
+
+.xp-item[data-open] .xp-node {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-primary) 13%, transparent);
+}
+
+.xp-item[data-open] .xp-node::after {
+  background: var(--color-primary);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--color-primary) 85%, transparent);
+}
+
+.xp-period {
+  flex: none;
+  margin-top: 2px;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  padding: 4px 11px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--color-fg-dim);
+  white-space: nowrap;
+  transition:
+    border-color 0.4s var(--ease-out-soft),
+    color 0.4s var(--ease-out-soft);
+}
+
+.xp-item[data-open] .xp-period {
+  border-color: color-mix(in oklab, var(--color-primary) 38%, var(--color-line));
+  color: var(--color-fg-muted);
+}
+
+.xp-toggle {
+  display: grid;
+  place-items: center;
+  flex: none;
+  margin-top: 1px;
+  height: 26px;
+  width: 26px;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  color: var(--color-fg-dim);
+  transition:
+    transform 0.5s var(--ease-back),
+    color 0.4s var(--ease-out-soft),
+    border-color 0.4s var(--ease-out-soft),
+    background-color 0.4s var(--ease-out-soft);
+}
+
+.xp-item[data-open] .xp-toggle {
+  transform: rotate(135deg);
+  color: var(--color-primary);
+  border-color: color-mix(in oklab, var(--color-primary) 45%, var(--color-line));
+  background: color-mix(in oklab, var(--color-primary) 12%, transparent);
+}
+
+.xp-body {
+  display: grid;
+  gap: 11px;
+  padding: 0 0 26px 36px;
+}
+
+@media (min-width: 640px) {
+  .xp-body {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 28px;
+  }
+}
+
+.xp-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+  opacity: 0;
+  transform: translateY(7px);
+  transition:
+    opacity 0.5s var(--ease-out-soft),
+    transform 0.5s var(--ease-out-soft);
+}
+
+.xp-item[data-open] .xp-point {
+  opacity: 1;
+  transform: none;
+}
+
+.xp-bullet {
+  margin-top: 8px;
+  height: 5px;
+  width: 5px;
+  flex: none;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-primary) 75%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary) 10%, transparent);
+}
+
+/* ==========================================================================
+   Project cards
+   The capability mosaic is the card: a hairline grid where every cell is one
+   thing the product does, marked with an icon. Everything else — the index
+   rail, the headline numbers, the stack — is support around it.
+   ========================================================================== */
+.pcard-rail {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.pcard-idx {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-primary);
+}
+
+.pcard-rule {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  overflow: hidden;
+  background: var(--color-line);
+}
+
+/* echoes the rule under every section heading */
+.pcard-rule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    color-mix(in oklab, var(--color-primary) 10%, transparent)
+  );
+  transition: transform 0.75s var(--ease-out-soft);
+}
+
+.pcard:hover .pcard-rule::after,
+.pcard:focus-within .pcard-rule::after {
+  transform: scaleX(1);
+}
+
+.pcard-cat {
+  font-family: var(--font-mono), monospace;
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  text-align: right;
+  color: var(--color-fg-dim);
+  transition: color 0.4s var(--ease-out-soft);
+}
+
+.pcard:hover .pcard-cat,
+.pcard:focus-within .pcard-cat {
+  color: var(--color-fg-muted);
+}
+
+.pcard-title {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--color-fg);
+}
+
+/* headline numbers, inline — the mosaic carries the weight now */
+.pcard-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 18px;
+  margin-top: 20px;
+  font-family: var(--font-mono), monospace;
+}
+
+.pcard-metrics li {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.pcard-metrics b {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  transition: color 0.4s var(--ease-out-soft);
+}
+
+.pcard:hover .pcard-metrics b,
+.pcard:focus-within .pcard-metrics b {
+  color: var(--color-primary-soft);
+}
+
+.pcard-metrics span {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--color-fg-dim);
+}
+
+/* ---------------------------------------------------------------- mosaic
+   1px gaps over a line-coloured bed draw every divider at once, so the grid
+   needs no per-cell border bookkeeping. It relies on whole rows, which
+   coreFeatures() guarantees. */
+.pcard-mosaic {
+  display: grid;
+  gap: 1px;
+  background: var(--color-line);
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.pcard-cell {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 15px 16px;
+  background: var(--color-surface);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--color-fg-muted);
+  transition:
+    background-color 0.4s var(--ease-out-soft),
+    color 0.4s var(--ease-out-soft);
+}
+
+.pcard:hover .pcard-cell,
+.pcard:focus-within .pcard-cell {
+  background: var(--color-surface-hi);
+  color: var(--color-fg);
+}
+
+.pcard-cell-ico {
+  height: 15px;
+  width: 15px;
+  flex: none;
+  margin-top: 1px;
+  color: color-mix(in oklab, var(--color-primary) 62%, transparent);
+  transition: color 0.4s var(--ease-out-soft);
+}
+
+.pcard:hover .pcard-cell-ico,
+.pcard:focus-within .pcard-cell-ico {
+  color: var(--color-primary);
+}
+
+/* ------------------------------------------------------------------ stack */
+.pcard-stack {
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+  line-height: 1.85;
+  color: var(--color-fg-dim);
+  transition: color 0.4s var(--ease-out-soft);
+}
+
+.pcard:hover .pcard-stack,
+.pcard:focus-within .pcard-stack {
+  color: var(--color-fg-muted);
+}
+
+.pcard-sep {
+  margin: 0 7px;
+  color: var(--color-line-hi);
+}
+
+/* ------------------------------------------------------------------ links */
+.pcard-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--color-fg-muted);
+  transition: color 0.3s var(--ease-out-soft);
+}
+
+.pcard-link:hover {
+  color: var(--color-fg);
+}
+
+.pcard-link-primary {
+  color: var(--color-primary);
+}
+
+.pcard-link-primary:hover {
+  color: var(--color-primary-soft);
+}
+
+.pcard-ico {
+  transition: transform 0.3s var(--ease-out-soft);
+}
+
+.pcard-link:hover .pcard-ico {
+  transform: translate(2px, -2px);
+}
+
+.pcard-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  transition: background-color 0.3s var(--ease-out-soft);
+}
+
+.pcard-cta:hover {
+  background: var(--color-primary-deep);
+}
+
+.pcard-private {
+  font-family: var(--font-mono), monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-fg-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-point {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

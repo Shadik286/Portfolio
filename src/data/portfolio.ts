@@ -33,7 +33,7 @@ export const portfolioData = {
       id: "renten",
       name: "Renten",
       category: "Property Management System",
-      description: "A comprehensive platform with a mobile app and web ecosystem featuring payments, subscriptions, and complex business logic.",
+      description: "A Flutter app and web ecosystem carrying payments, subscriptions and billing logic.",
       techStack: ["Flutter", "Next.js", "TypeScript", "PostgreSQL", "Prisma"],
       image: "/projects/renten.svg",
       metrics: [
@@ -59,13 +59,13 @@ export const portfolioData = {
       id: "inventra",
       name: "Inventra",
       category: "Inventory Management System",
-      description: "A full inventory management platform designed around products, sales, suppliers, dues, and reports.",
+      description: "Products, sales, suppliers and dues in one workspace.",
       techStack: ["React", "TypeScript", "FastAPI", "Python", "PostgreSQL"],
       image: "/projects/inventra.svg",
       metrics: [
         { value: "SPA", label: "React + TS" },
-        { value: "v1", label: "Versioned API" },
-        { value: "2", label: "Deploy targets" },
+        { value: "v1", label: "API" },
+        { value: "2", label: "Deploys" },
       ],
       features: [
         "React + TypeScript SPA",
@@ -81,12 +81,12 @@ export const portfolioData = {
       id: "study-maite",
       name: "Study mAIte",
       category: "AI Study Assistant",
-      description: "An AI study assistant using RAG to process lecture PDFs and generate automatic notes and quizzes.",
+      description: "Turns lecture PDFs into notes and quizzes over a RAG pipeline.",
       techStack: ["Flutter", "FastAPI", "pgvector", "Gemini API"],
       image: "/projects/study-maite.svg",
       metrics: [
         { value: "RAG", label: "Pipeline" },
-        { value: "PDF", label: "→ notes & quizzes" },
+        { value: "PDF", label: "Ingest" },
         { value: "pgvector", label: "Embeddings" },
       ],
       features: [
@@ -103,13 +103,13 @@ export const portfolioData = {
       id: "researchers-bot",
       name: "Researchers-Bot",
       category: "Academic Paper Search API",
-      description: "An academic paper search API integrating multiple research sources.",
+      description: "One search API over arXiv, PubMed Central and Crossref.",
       techStack: ["Node.js", "TypeScript"],
       image: "/projects/researchers-bot.svg",
       metrics: [
-        { value: "9", label: "Academic sources" },
-        { value: "REST", label: "Aggregation API" },
-        { value: "Cache", label: "+ retry logic" },
+        { value: "9", label: "Sources" },
+        { value: "REST", label: "API" },
+        { value: "Cache", label: "+ retry" },
       ],
       features: [
         "REST API aggregating 9 academic sources",

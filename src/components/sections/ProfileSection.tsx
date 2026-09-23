@@ -7,7 +7,6 @@ import { ArrowDownRight, MapPin } from "lucide-react";
 import { FaGithub, FaLinkedin, FaCode } from "react-icons/fa";
 import { SiCodeforces } from "react-icons/si";
 import { portfolioData } from "@/data/portfolio";
-import { CountUp } from "../ui/CountUp";
 
 const { personal } = portfolioData;
 
@@ -16,13 +15,6 @@ const socials = [
   { href: personal.social.linkedin, label: "LinkedIn", Icon: FaLinkedin },
   { href: personal.social.codeforces, label: "Codeforces", Icon: SiCodeforces },
   { href: personal.social.atcoder, label: "AtCoder", Icon: FaCode },
-];
-
-const stats = [
-  { value: "1576", label: "Codeforces max", accent: true },
-  { value: "61st", label: "ICPC Dhaka 2025", accent: true },
-  { value: "4", label: "Shipped products" },
-  { value: "3.78", label: "CGPA / 4.00" },
 ];
 
 export function ProfileSection() {
@@ -157,29 +149,6 @@ export function ProfileSection() {
               ))}
             </div>
           </motion.div>
-
-          {/* stat strip — amber marks achievements, cobalt everything else */}
-          <motion.dl
-            className="mt-14 grid max-w-xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.55 }}
-          >
-            {stats.map((s) => (
-              <div key={s.label} className="border-l border-line pl-4">
-                <dt
-                  className={`font-mono text-xl font-semibold tracking-tight md:text-2xl ${
-                    s.accent ? "text-amber" : "text-fg"
-                  }`}
-                >
-                  <CountUp value={s.value} />
-                </dt>
-                <dd className="mt-1 text-[11px] uppercase tracking-[0.14em] text-fg-dim">
-                  {s.label}
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
         </motion.div>
 
         {/* ------------------------------------------------------ portrait */}

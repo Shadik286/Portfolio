@@ -26,8 +26,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // suppressHydrationWarning: extensions (password managers, Foxified, dark-mode
+  // add-ons) stamp attributes onto <html> before React hydrates, which React
+  // otherwise reports as a mismatch. It only covers this element's own attributes.
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} antialiased scroll-smooth`}
+      suppressHydrationWarning
+    >
       <body className="min-h-screen bg-ink text-fg flex flex-col relative overflow-x-hidden">
         <ScrollProgress />
         <CustomCursor />
