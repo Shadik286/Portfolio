@@ -18,4 +18,4 @@ Run locally by opening `public/index.html`, or serve the folder:
 npx serve public
 ```
 
-Live: https://portfolio-psi-five-stixg62m7j.vercel.app
+Live: https://portfolio-shadikrahman.vercel.app
