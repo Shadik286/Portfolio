@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shadik Rahman — 3D portfolio
 
-## Getting Started
+A single-page, 3D brain-themed portfolio: a WebGL neuron network the camera flies through as you scroll, a pinned project deck, a tech-stack orbit, competitive programming stats and a leadership corridor.
 
-First, run the development server:
+Plain static HTML — no build step. Three.js, GSAP (ScrollTrigger) and Lenis load from CDNs.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+public/
+  index.html   the whole site (markup, styles, scripts)
+  avatar.jpg   hero photo
+  shots/       project screenshots
+vercel.json    deploys public/ as a static site
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Run locally by opening `public/index.html`, or serve the folder:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx serve public
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Live: https://portfolio-psi-five-stixg62m7j.vercel.app
