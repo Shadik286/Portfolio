@@ -757,7 +757,6 @@ html:not(.motion) .depth .dcard:nth-child(3){grid-column:1/-1}
         </div>
       </div>
     </div>
-    <div class="scroll-hint mono" aria-hidden="true"><i></i>Hover the brain</div>
   </section>
 
   <!-- PROJECTS -->
@@ -1607,8 +1606,7 @@ Experience
     .from('.tk', { y: 12, rotationX: -80, opacity: 0, duration: .7, ease: 'back.out(2)', stagger: .07, clearProps: 'transform,opacity' }, 1.1)
     .from('.c3', { rotationY: -40, rotationX: 18, z: -300, opacity: 0, duration: 1.8, ease: 'expo.out' }, .2)
     .from('.c3-chip', { z: 0, scale: .6, opacity: 0, duration: 1, ease: 'back.out(2)', stagger: .15 }, 1)
-    .from('.nav-in > *', { y: -20, opacity: 0, duration: .8, ease: 'power3.out', stagger: .06 }, .3)
-    .from('.scroll-hint', { opacity: 0, duration: .8 }, 1.4);
+    .from('.nav-in > *', { y: -20, opacity: 0, duration: .8, ease: 'power3.out', stagger: .06 }, .3);
   setTimeout(() => { if (intro.progress() < .5) intro.progress(1); }, 2600);
 
   /* role split-flap */
